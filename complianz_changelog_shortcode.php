@@ -1,7 +1,22 @@
 <?php
-// This code defines a shortcode [complianz_changelog url="changelog_url"] that retrieves and displays a plugin's changelog from a remote file.
 defined( 'ABSPATH' ) or die( "you do not have access to this page!" );
 
+/**
+* Shortcode to retrieve and display a changelog from a given URL.
+*
+* This function fetches a changelog from a specified URL and extracts version updates.
+* The extracted content is displayed in a collapsible `<details>` HTML format, allowing
+* users to expand and view different version changes.
+*
+* Usage example:
+* [complianz_changelog url="https://example.com/changelog.txt"]
+*
+* @param array $atts Shortcode attributes.
+*     - 'url' (string) The URL of the changelog file to fetch.
+*
+* @return string HTML formatted changelog content or an error message.
+*/
+ 
 function complianz_changelog_shortcode($atts) {
 
     $atts = shortcode_atts (array(
