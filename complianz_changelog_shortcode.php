@@ -1,6 +1,5 @@
 <?php
 defined( 'ABSPATH' ) or die( "you do not have access to this page!" );
-
 /**
 * Shortcode to retrieve and display a changelog from a given URL.
 *
@@ -18,17 +17,12 @@ defined( 'ABSPATH' ) or die( "you do not have access to this page!" );
 */
  
 function complianz_changelog_shortcode($atts) {
-
     $atts = shortcode_atts (array(
                 'url' => ''
                 ), $atts);
-
     if (empty($atts['url'])){
-
         return 'URL not found in the shortcode. Please insert a URL.';
-
     }
-
     $response = wp_remote_get($atts['url']);
  
     if (is_wp_error($response)) {
@@ -41,24 +35,30 @@ function complianz_changelog_shortcode($atts) {
         return 'No content found in the file.';
     }
  
-    if (preg_match('/== Change log ==(.*?)==/s', $content, $matches)) {
+    if (preg_match('/== Change log ==(.*?)(?=\n==|$)/s', $content, $matches)) {
         $changelog = trim($matches[1]);
     } else {
         return 'Changelog section not found.';
     }
  
-    preg_match_all('/= (\d+\.\d+\.\d+) =\n(.*?)(?=\n= \d+\.\d+\.\d+ =|\Z)/s', $changelog, $entries, PREG_SET_ORDER);
+    preg_match_all('/= ([0-9]+\.[0-9]+\.[0-9]+(?:\.[0-9]+)?) =(.*?)(?=\n= [0-9]+\.[0-9]+\.[0-9]+(?:\.[0-9]+)? =|\Z)/s', $changelog, $entries, PREG_SET_ORDER);
  
     if (empty($entries)) {
         return 'No changelog entries found.';
     }
-
+    
     $output = '<div class="complianz-changelog">';
     foreach ($entries as $entry) {
         $version = trim($entry[1]);
         $details = trim($entry[2]);
-        $details = preg_replace('/\* (.+)/', '<li>$1</li>', trim($details));
- 
+        
+        // Sostituisce le righe che iniziano con * con elementi li
+        $details = preg_replace('/^\* (.+)$/m', '<li>$1</li>', $details);
+        
+        $details = preg_replace('/^\* [A-Za-z]+ \d{1,2}[a-z]{0,2}, \d{4}$/m', '', $details);
+        
+        $details = preg_replace('/\n\s*\n/', "\n", $details);
+        
         $output .= '
 <details>
 <summary>' . esc_html($version) . '</summary>
@@ -68,8 +68,8 @@ function complianz_changelog_shortcode($atts) {
  
     $output .= '</div>';
  
- 
     return $output;
 }
  
 add_shortcode('complianz_changelog', 'complianz_changelog_shortcode');
+?>
