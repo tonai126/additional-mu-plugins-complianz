@@ -52,7 +52,6 @@ function complianz_changelog_shortcode($atts) {
         $version = trim($entry[1]);
         $details = trim($entry[2]);
         
-        // Sostituisce le righe che iniziano con * con elementi li
         $details = preg_replace('/^\* (.+)$/m', '<li>$1</li>', $details);
         
         $details = preg_replace('/^\* [A-Za-z]+ \d{1,2}[a-z]{0,2}, \d{4}$/m', '', $details);
