@@ -8,10 +8,10 @@ A collection of custom Must-Use Plugins (MU-Plugins) designed to extend and cust
 Integration for managing Google Maps in Bricks Builder while respecting cookie consent requirements.
 
 ### 2. cmplz_reorder_plugin.php
-Reorders the position/priority of Complianz plugins in the WordPress loading sequence.
+Reorders the position/priority of Complianz services inside the Cookie Policy in a custom and desired order. Utility Plugin.
 
 ### 3. complianz_changelog_shortcode.php
-Provides a shortcode to display the Complianz changelog on your WordPress site.
+Provides a `[complianz_changelog]` shortcode that fetches a remote changelog/readme file (e.g., from http://WordPress.org  or a plugin repo), parses the == Changelog == section, extracts version entries and requirements metadata (WP version, PHP version, Tested up to), and renders them as styled, collapsible cards grouped by major version — with a "Latest" badge on the most recent entry.
 
 ### 4. delay_cookiebanner_on_first_scroll.php
 Delays the display of the cookie banner until the user's first scroll action, improving initial page load experience.
